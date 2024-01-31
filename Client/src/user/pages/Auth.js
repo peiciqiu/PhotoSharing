@@ -59,34 +59,7 @@ const Auth = () => {
         setIsLoginMode(prevMode => !prevMode);
     };
 
-    // const authSubmitHandler = async event => {
-    //     event.preventDefault();
-    //     // console.log(formState.inputs);
-    //     if (isLoginMode) {
-
-    //     } else {
-    //         try {
-    //             const response = await fetch('http://localhost:3000/api/users/signup', {
-    //                 method: 'POST',
-    //                 headers: {
-    //                     'Content-Type': 'application/json'
-    //                 },
-    //                 body: JSON.stringify({
-    //                     username: formState.inputs.username.value, 
-    //                     email: formState.inputs.email.value,
-    //                     password: formState.inputs.password.value
-    //                 })
-    //             });
-    //             const responseData = response.json();
-    //             console.log(responseData);
-    //         } catch (err) {
-    //             console.log(err);
-    //         }
-
-    //     }
-
-    //     auth.login();
-    // };
+ 
     const authSubmitHandler = async event => {
         event.preventDefault();
         if (isLoginMode) {
@@ -114,6 +87,7 @@ const Auth = () => {
                 }
     
                 const responseData = await response.json();
+        
                 console.log(responseData);
                 setIsLoading(false);
                 auth.login();
@@ -126,7 +100,14 @@ const Auth = () => {
     
     };
 
-    return <Card className="authentication">
+    const errorHandler = () => {
+        setError(null);
+    };
+
+    return (
+    <React.Fragment>
+    <ErrorModal error={error} onClear={errorHandler}/>
+    <Card className="authentication">
         {isLoading && <LoadingSpinner asOverlay/>}
         <h2>Login Required</h2>
         <hr />
@@ -162,7 +143,9 @@ const Auth = () => {
         <Button inverse onClick={switchModalHandler}> 
         SWITCH TO {isLoginMode ? 'SIGNUP' : 'LOGIN'}
         </Button>
-        </Card>;
+        </Card>
+        </React.Fragment>
+    );
 };
 
 export default Auth;
