@@ -18,16 +18,6 @@ const Auth = () => {
     const [isLoading, setIsLoading] = useState(false);
     const [error, setError] = useState();
 
-    // const [formState, inputHandler, setFormData] = useForm({
-    //     email: {
-    //         value: '',
-    //         isValid: false
-    //     },
-    //     password: {
-    //         value: '',
-    //         isValid: false
-    //     }
-    // }, false);
     const [formState, inputHandler, setFormData] = useForm({
         // username: {
         //     value: '',
@@ -62,7 +52,39 @@ const Auth = () => {
  
     const authSubmitHandler = async event => {
         event.preventDefault();
+        setIsLoading(true);
+
         if (isLoginMode) {
+            try {
+                setIsLoading(true);
+               
+                const response = await fetch('http://localhost:3000/api/users/login', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({
+                        email: formState.inputs.email.value,
+                        password: formState.inputs.password.value
+                    })
+                });
+    
+                if (!response.ok) {
+                    const responseData = await response.json();
+                    console.error('Signup failed:', responseData);
+                    throw new Error(responseData.message || 'Signup failed');
+                }
+    
+                const responseData = await response.json();
+        
+                // console.log(responseData);
+                setIsLoading(false);
+                auth.login();
+            } catch (err) {
+                console.log(err);
+                setIsLoading(false);
+                setError(err.message || 'Something went wrong, please try again.');
+            }
             // Handle login
         } else {
             try {
@@ -88,7 +110,7 @@ const Auth = () => {
     
                 const responseData = await response.json();
         
-                console.log(responseData);
+                // console.log(responseData);
                 setIsLoading(false);
                 auth.login();
             } catch (err) {
