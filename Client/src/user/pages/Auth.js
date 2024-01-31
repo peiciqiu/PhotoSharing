@@ -13,7 +13,21 @@ const Auth = () => {
     const auth = useContext(AuthContext);
     const [isLoginMode, setIsLoginMode] = useState(true);
 
+    // const [formState, inputHandler, setFormData] = useForm({
+    //     email: {
+    //         value: '',
+    //         isValid: false
+    //     },
+    //     password: {
+    //         value: '',
+    //         isValid: false
+    //     }
+    // }, false);
     const [formState, inputHandler, setFormData] = useForm({
+        // username: {
+        //     value: '',
+        //     isValid: false
+        // }, 
         email: {
             value: '',
             isValid: false
@@ -26,11 +40,11 @@ const Auth = () => {
 
     const switchModalHandler = () => {
         if (!isLoginMode) {
-            setFormData({...formState.inputs, name: undefined}, formState.inputs.email.isValid && formState.inputs.password.isValid);
+            setFormData({...formState.inputs, username: undefined}, formState.inputs.email.isValid && formState.inputs.password.isValid);
         } else {
             setFormData({
                 ...formState.inputs,
-                name: {
+                username: {
                     value: '',
                     isValid: false                }
             }, 
@@ -40,10 +54,65 @@ const Auth = () => {
         setIsLoginMode(prevMode => !prevMode);
     };
 
-    const authSubmitHandler = event => {
+    // const authSubmitHandler = async event => {
+    //     event.preventDefault();
+    //     // console.log(formState.inputs);
+    //     if (isLoginMode) {
+
+    //     } else {
+    //         try {
+    //             const response = await fetch('http://localhost:3000/api/users/signup', {
+    //                 method: 'POST',
+    //                 headers: {
+    //                     'Content-Type': 'application/json'
+    //                 },
+    //                 body: JSON.stringify({
+    //                     username: formState.inputs.username.value, 
+    //                     email: formState.inputs.email.value,
+    //                     password: formState.inputs.password.value
+    //                 })
+    //             });
+    //             const responseData = response.json();
+    //             console.log(responseData);
+    //         } catch (err) {
+    //             console.log(err);
+    //         }
+
+    //     }
+
+    //     auth.login();
+    // };
+    const authSubmitHandler = async event => {
         event.preventDefault();
-        console.log(formState.inputs);
-        auth.login();
+        if (isLoginMode) {
+            // Handle login
+        } else {
+            try {
+                const response = await fetch('http://localhost:3000/api/users/signup', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({
+                        username: formState.inputs.username.value, 
+                        email: formState.inputs.email.value,
+                        password: formState.inputs.password.value
+                    })
+                });
+    
+                if (!response.ok) {
+                    const responseData = await response.json();
+                    console.error('Signup failed:', responseData);
+                    throw new Error(responseData.message || 'Signup failed');
+                }
+    
+                const responseData = await response.json();
+                console.log(responseData);
+                auth.login();
+            } catch (err) {
+                console.log(err);
+            }
+        }
     };
 
     return <Card className="authentication">
@@ -52,7 +121,7 @@ const Auth = () => {
         <form onSubmit={authSubmitHandler}>
             {!isLoginMode && (<Input 
             element="input" 
-            id="name" 
+            id="username" 
             type="text" 
             label="Your Name" 
             validators={[VALIDATOR_REQUIRE()]} 
