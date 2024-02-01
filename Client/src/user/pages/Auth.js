@@ -6,6 +6,7 @@ import Input from "../../shared/components/FormElements/Input";
 import Button from "../../shared/components/FormElements/Button";
 import ErrorModal from "../../shared/components/UIElement/ErrorModal";
 import LoadingSpinner from "../../shared/components/UIElement/LoadingSpinner";
+import ImageUpload from "../../shared/components/FormElements/ImageUpload";
 //
 import { useHttpClient } from "../../shared/hooks/http-hook";
 //
@@ -39,13 +40,17 @@ const Auth = () => {
 
     const switchModalHandler = () => {
         if (!isLoginMode) {
-            setFormData({...formState.inputs, username: undefined}, formState.inputs.email.isValid && formState.inputs.password.isValid);
+            setFormData({...formState.inputs, username: undefined, image: undefined}, formState.inputs.email.isValid && formState.inputs.password.isValid);
         } else {
             setFormData({
                 ...formState.inputs,
                 username: {
                     value: '',
-                    isValid: false}
+                    isValid: false},
+                image: {
+                  value: null,
+                  isValid: false
+                }
             }, 
             false
             );
@@ -56,6 +61,7 @@ const Auth = () => {
  
     const authSubmitHandler = async event => {
         event.preventDefault();
+        console.log(formState.inputs);
     
         if (isLoginMode) {
           try {
@@ -110,6 +116,7 @@ const Auth = () => {
             onInput={inputHandler}
             />
             )}
+            {!isLoginMode && <ImageUpload center id="image" onInput={inputHandler}/>}
             <Input element="input" 
             id="email" 
             type="email" 
