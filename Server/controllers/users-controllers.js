@@ -4,7 +4,6 @@ const HttpError = require('../models/http-error');
 const User = require('../models/user');
 
 
-
 const getUsers = async (req, res, next) => {
     let users
     try {
@@ -23,11 +22,13 @@ const getUsers = async (req, res, next) => {
 const signup = async (req, res, next) => {
     const errors = validationResult(req);
     if (!errors.isEmpty()) {
+
         console.log(errors.array()); // print the specific validation errors
         return next(
             new HttpError('Invalid inputs passed, please check your data', 422)
         );
     }
+
 
     const { username, email, password } = req.body;
 
@@ -42,9 +43,9 @@ const signup = async (req, res, next) => {
         const createdUser = new User({
             username,
             email,
-            image: 'https://example.com/user-image.jpg', // replace with valid URL
+            image: req.file.path, // replace with valid URL
             password,
-            places:[]
+            places: [],
         });
 
         await createdUser.save();
