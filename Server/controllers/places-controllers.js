@@ -1,6 +1,6 @@
 
-
-const uuid = require('uuid/v4');
+const fs = require('fs');
+// const uuid = require('uuid/v4');
 const { validationResult } = require('express-validator');
 const mongoose = require('mongoose');
 
@@ -184,6 +184,8 @@ const deletePlace = async (req, res, next) => {
       throw new HttpError('Could not find a place for the provided id.', 404);
     }
 
+    const imagePath = place.image;
+
     // Remove the place from the user's places array
     const userId = place.creator; // Assuming 'creator' holds the user's ID
     await User.updateOne(
@@ -196,6 +198,9 @@ const deletePlace = async (req, res, next) => {
     await Place.deleteOne({ _id: placeId }).session(session);
 
     await session.commitTransaction();
+    fs.unlink(imagePath, err => {
+        console.log(err);
+    });
     res.status(200).json({ message: 'Deleted place.' });
   } catch (err) {
     await session.abortTransaction();
