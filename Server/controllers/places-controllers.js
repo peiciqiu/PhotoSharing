@@ -106,10 +106,10 @@ const createPlace = async (req, res, next) => {
 
   if (!user) {
     const error = new HttpError('Could not find user for provided id', 404);
+    console.log("Could not find user for provided id", user);
     return next (error);
   }
 
-  console.log(user);
 
   try {
     // await createdPlace.save();
@@ -199,7 +199,7 @@ const deletePlace = async (req, res, next) => {
 
     await session.commitTransaction();
     fs.unlink(imagePath, err => {
-        console.log(err);
+        console.log("failed to delete ", imagePath, ": ", err);
     });
     res.status(200).json({ message: 'Deleted place.' });
   } catch (err) {
