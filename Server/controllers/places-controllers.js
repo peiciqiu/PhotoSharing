@@ -69,8 +69,9 @@ const createPlace = async (req, res, next) => {
       new HttpError('Invalid inputs passed, please check your data.', 422)
     );
   }
-
   const { title, description, address, creator } = req.body;
+
+  console.log("creator is: ", creator);
 
   let coordinates;
   try {
