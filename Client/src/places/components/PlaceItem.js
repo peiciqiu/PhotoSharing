@@ -21,6 +21,7 @@ const PlaceItem = props => {
   const closeMapHandler = () => setShowMap(false);
 
   const showDeleteWarningHandler = () => {
+    // console.log("auth on confirm delete place: ", auth);
     setShowConfirmModal(true);
   };
 
@@ -31,7 +32,8 @@ const PlaceItem = props => {
   const confirmDeleteHandler = async () => {
     setShowConfirmModal(false);
     try {
-      await sendRequest(`http://localhost:3000/api/places/${props.id}`, 'DELETE');
+      // console.log("auth on delete place: ", auth);
+      await sendRequest(`http://localhost:3000/api/places/${props.id}`, 'DELETE', null, {Authorization: 'Bearer ' + auth.token});
       props.onDelete(props.id);
     } catch (err) {
 
