@@ -155,6 +155,14 @@ const updatePlace = async (req, res, next) => {
     return next(error);
   }
 
+  // if (place.creator !== req.userData.userId) {
+  //   const error = new HttpError(
+  //     'You are not allowed to edit this place',
+  //     401
+  //   );
+  //   return next(error);
+  // }
+
   place.title = title;
   place.description = description;
 
@@ -199,9 +207,9 @@ const deletePlace = async (req, res, next) => {
     await Place.deleteOne({ _id: placeId }).session(session);
 
     await session.commitTransaction();
-    fs.unlink(imagePath, err => {
-        console.log("failed to delete ", imagePath, ": ", err);
-    });
+    // fs.unlink(imagePath, err => {
+    //     console.log("failed to delete ", imagePath, ": ", err);
+    // });
     res.status(200).json({ message: 'Deleted place.' });
   } catch (err) {
     await session.abortTransaction();
@@ -216,6 +224,7 @@ const deletePlace = async (req, res, next) => {
     session.endSession();
   }
 };
+
 
 
 exports.getPlaceById = getPlaceById;
