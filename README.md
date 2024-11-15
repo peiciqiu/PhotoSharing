@@ -14,28 +14,31 @@ We hope you’ll love being part of our community and enjoy making and sharing m
 
 ### Dependencies
 
-* Describe any prerequisites, libraries, OS version, etc., needed before installing program.
-* ex. Windows 10
+* Prerequisites:
+* Node.js: v20.12.0
 
-### Installing
 
-* How/where to download your program
-* Any modifications needed to be made to files/folders
+### Installing and Starting Server
 
-### Executing program
+* #### Navigate to the Server folder
+- ` cd Server `
 
-* How to run the program
-* Step-by-step bullets
-```
-code blocks for commands
-```
 
-## Help
+* #### Then install dependencies and start the server:
+- ` npm install `
+- ` npm start ` 
 
-Any advise for common problems or issues.
-```
-command to run if program contains helper info
-```
+### Installing and Starting Client
+
+#### Navigate to the Server folder
+-  ` cd Client `
+
+#### Then install dependencies and start the client:
+- ` npm install `
+- ` npm start ` 
+
+
+
 
 
 ## Deployed Link
