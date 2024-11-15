@@ -20,11 +20,11 @@ We hope you’ll love being part of our community and enjoy making and sharing m
 
 ### Installing and Starting Server
 
-* #### Navigate to the Server folder
+#### Navigate to the Server folder
 - ` cd Server `
 
 
-* #### Then install dependencies and start the server:
+#### Then install dependencies and start the server:
 - ` npm install `
 - ` npm start ` 
 
